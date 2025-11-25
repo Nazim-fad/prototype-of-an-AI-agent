@@ -24,15 +24,17 @@ ollama pull all-minilm
 ### Setup
 
 ```bash
-conda env create -f environment.yml
-conda activate your-env-name
+conda create -n dataiku
+conda activate dataiku
+pip install -r requirements.txt
 python src/db/init_db.py
 ```
 
 ### Run
 
 ```bash
-streamlit run streamlit_app.py
+conda activate dataiku
+ python -m streamlit run streamlit_app.py
 ```
 
 ## Architecture
