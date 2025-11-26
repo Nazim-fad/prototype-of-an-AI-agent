@@ -1,28 +1,32 @@
 from pathlib import Path
 from typing import Any, Dict, Optional
+from smolagents import tool
+
 
 from src.parsing.base_parser import parse_pdf_to_markdown
 from src.parsing.document_classifier import classify_document_from_text
 from src.parsing.invoice_parser import parse_invoice_text, ParsedInvoice
 from src.parsing.ticket_parser import parse_ticket_text, ParsedTicket
 
-
+@tool
 def parse_document_tool(file_path: str) -> Dict[str, Any]:
     """
-    Parse a PDF document into structured invoice or ticket data.
-    
-    Uses LlamaParse to convert PDF to markdown, classifies the document type,
-    and extracts structured fields accordingly.
-    
+    Classify and parse a financial PDF document (invoice or ticket).
+
     Args:
-        file_path: Path to the PDF file.
-    
+        file_path: Path to the PDF file on disk. Must exist and be a
+            readable PDF, typically in the uploads directory.
+
     Returns:
-        Dict with keys:
-            - doc_type: "invoice", "ticket", or "unknown"
-            - raw_text: Full markdown content
-            - parsed_invoice: Extracted invoice fields (if invoice), else None
-            - parsed_ticket: Extracted ticket fields (if ticket), else None
+        A dictionary with:
+            doc_type: String label for the detected document type
+                ("invoice", "ticket", or "unknown").
+            raw_text: Full markdown/text content of the document as
+                returned by the PDF parser.
+            parsed_invoice: Parsed invoice fields as a dictionary, or
+                None if the document is not an invoice.
+            parsed_ticket: Parsed ticket fields as a dictionary, or
+                None if the document is not a ticket.
     """
     path = Path(file_path)
     if not path.exists():

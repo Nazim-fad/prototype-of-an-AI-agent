@@ -1,5 +1,3 @@
-from typing import List, Tuple
-
 import streamlit as st
 
 from src.agent.chat_agent import DocumentChatAgent
@@ -29,17 +27,20 @@ def render_chat_tab() -> None:
         "chat_agent" not in st.session_state
         or st.session_state.get("chat_agent_doc_id") != hash(doc_ctx["raw_text"])
     ):
+        # Create new chat agent for this document
+        # The agent maintains conversation history internally
         st.session_state["chat_agent"] = DocumentChatAgent(
             raw_text=doc_ctx["raw_text"],
             parsed_invoice=doc_ctx.get("parsed_invoice"),
             parsed_ticket=doc_ctx.get("parsed_ticket"),
         )
         st.session_state["chat_agent_doc_id"] = hash(doc_ctx["raw_text"])
+        st.session_state["chat_history"] = []  # Reset history for new document
 
     if st.button("Ask", key="ask_button") and question.strip():
         agent_chat = st.session_state["chat_agent"]
-        history: List[Tuple[str, str]] = st.session_state["chat_history"]
-        answer = agent_chat.chat(question, history=history)
+        # The agent handles conversation history internally
+        answer = agent_chat.chat(question)
         st.session_state["chat_history"].append((question, answer))
 
     for q, a in st.session_state.get("chat_history", []):

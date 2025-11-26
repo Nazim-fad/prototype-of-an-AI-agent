@@ -1,6 +1,5 @@
-from .document_agent import DocumentAgent
 from .llm_client import get_llm
 from .chat_agent import DocumentChatAgent
 
 
-__all__ = ["DocumentAgent", "get_llm","DocumentChatAgent"]
+__all__ = ["get_llm","DocumentChatAgent"]

@@ -1,40 +1,31 @@
-# src/tools/reconciliation_tools.py
-from __future__ import annotations
-
 from typing import Any, Dict, List, Optional
+from smolagents import tool
+
 
 JSONDict = Dict[str, Any]
 
-
+@tool
 def reconcile_invoice_with_db_tool(
     parsed_invoice: JSONDict,
     db_invoice: Optional[JSONDict],
 ) -> JSONDict:
     """
-    Name:
-        reconcile_invoice_with_db
+    Compare a parsed invoice with a stored invoice record in the database.
 
-    Tool description:
-        Compare key numeric fields in a parsed invoice with the
-        corresponding values stored in the database.
+    Args:
+        parsed_invoice: Parsed invoice fields from the uploaded document,
+            typically containing at least 'total_amount' and 'tax_amount'.
+        db_invoice: Invoice row fetched from the database, or None if no
+            record was found for this invoice_id.
 
-    Input types and descriptions:
-        parsed_invoice (dict):
-            Parsed invoice as returned by parse_document, with fields such as
-            'total_amount' and 'tax_amount'.
-        db_invoice (dict or None):
-            Existing invoice row from the database (via DBClient.get_invoice),
-            or None if no record exists.
-
-    Output type:
-        dict with the following keys:
-            is_match (bool or None):
-                True if all compared fields match within tolerance,
-                False if differences were found,
-                or None if there was no DB record.
-            differences (list of str):
-                Human-readable descriptions of field-level differences, e.g.:
-                "total_amount: db=4300.00, document=4376.78".
+    Returns:
+        A dictionary with:
+            is_match: True if all compared numeric fields match within a
+                small tolerance, False if any difference is detected, or
+                None if there is no database record to compare.
+            differences: List of human-readable messages describing any
+                field-level mismatches (for example, differences in
+                'total_amount' or 'tax_amount').
     """
     # No record to compare against
     if db_invoice is None:

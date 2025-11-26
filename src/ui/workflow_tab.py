@@ -1,8 +1,7 @@
 from pathlib import Path
 
 import streamlit as st
-
-from src.agent.document_agent import DocumentAgent
+from src.agent.smol_document_agent import SmolDocumentAgent
 
 
 def save_uploaded_file(uploaded_file, upload_dir: Path) -> Path | None:
@@ -25,13 +24,6 @@ def render_workflow_tab(data_dir: Path, upload_dir: Path) -> None:
     )
 
     with st.expander("Agent settings", expanded=False):
-        auto_insert = st.checkbox(
-            "Auto-insert new valid invoices into DB", value=True
-        )
-        default_email_recipient = st.text_input(
-            "Default email recipient (for drafted emails)",
-            value="ap@acme-analytics.com",
-        )
         st.caption(f"Database path: `{data_dir / 'finance.db'}`")
 
     user_instruction = st.text_area(
@@ -57,25 +49,14 @@ def render_workflow_tab(data_dir: Path, upload_dir: Path) -> None:
     file_path = save_uploaded_file(uploaded_file, upload_dir)
     st.info(f"Uploaded file saved to `{file_path}`")
 
-    agent = DocumentAgent(
-        db_path=data_dir / "finance.db",
-        auto_insert_new_invoices=auto_insert,
-        default_email_recipient=default_email_recipient,
-    )
-
-    result = agent.handle_document(
-        file_path=file_path,
-        user_instruction=user_instruction,
-    )
+    agent = SmolDocumentAgent()
+    result = agent.run(file_path=file_path, user_instruction=user_instruction)
 
     st.session_state["doc_context"] = {
         "raw_text": result.get("raw_text"),
         "parsed_invoice": result.get("parsed_invoice"),
         "parsed_ticket": result.get("parsed_ticket"),
     }
-
-    st.markdown("### Agent plan")
-    st.json(result.get("plan", {}))
 
     st.markdown("### Detected document type")
     st.write(result.get("doc_type"))

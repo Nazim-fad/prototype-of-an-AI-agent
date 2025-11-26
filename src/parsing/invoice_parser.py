@@ -80,7 +80,7 @@ def _extract_invoice_fields_from_text(text: str) -> ParsedInvoice:
         except Exception:
             data = {}
 
-    # raw_text is not reliably set by the LLM; we inject it manually later
+    # raw_text
     data.setdefault("raw_text", "")
 
     return ParsedInvoice(**data)

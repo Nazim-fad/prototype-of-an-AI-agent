@@ -1,4 +1,6 @@
 from typing import Any, Dict, List, Optional
+from smolagents import tool
+
 
 JSONDict = Dict[str, Any]
 
@@ -15,42 +17,27 @@ def _parse_number(s: str | None) -> Optional[float]:
     except ValueError:
         return None
 
-
+@tool
 def validate_invoice_math_tool(
     parsed_invoice: JSONDict,
     raw_text: str,
 ) -> JSONDict:
     """
-    Name:
-        validate_invoice_math
+    Check whether the arithmetic inside an invoice is consistent.
 
-    Tool description:
-        Check whether the arithmetic inside an invoice is consistent.
+    Args:
+        parsed_invoice: Parsed invoice as a JSON-serializable dict. Should contain
+            numeric fields like 'tax_amount' and 'total_amount' when available.
+        raw_text: Full markdown/text representation of the invoice, including the
+            line-items table.
 
-        It verifies:
-        - for each line item: Qty * Unit Price ~= Line Total
-        - that the sum of line totals ~= the Subtotal
-        - that Subtotal + tax_amount ~= total_amount (from parsed_invoice)
-        - and cross-checks any "Subtotal", "Sales Tax", and "Total Amount Due"
-          rows in the markdown table.
-
-    Input types and descriptions:
-        parsed_invoice (dict):
-            JSON-serializable representation of the parsed invoice, with
-            numeric fields 'tax_amount' and 'total_amount' when available.
-        raw_text (str):
-            Full markdown/text representation of the invoice, including the
-            items table.
-
-    Output type:
-        dict with the following keys:
-            is_valid (bool or None):
-                True if all checks pass, False if any inconsistency is found,
+    Returns:
+        A dictionary with:
+            is_valid: True if all checks pass, False if any inconsistency is found,
                 or None if there was not enough information to perform checks.
-            issues (list of str):
-                Human-readable descriptions of any detected problems.
-            subtotal (float or None):
-                Subtotal inferred from the document (from table or text).
+            issues: List of human-readable descriptions of any detected problems.
+            subtotal: Subtotal inferred from the document (from the table or text),
+                or None if it could not be determined.
     """
     issues: List[str] = []
     line_items_ok = True

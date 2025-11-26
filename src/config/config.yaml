@@ -1,35 +1,7 @@
-app:
-  reconciliation_tolerance: 0.01  # dollars
-  default_email_recipient: "nazimabc1@gmail.com"
-  auto_insert_new_invoices: false
-
 llm:
   model: "qwen2.5:0.5b"  # it is an instruct model and it is small enough to run locally on my machine
   request_timeout: 120.0
 
-embeddings:
-  model_name: "all-minilm"
-
-rag:
-  top_k: 4
-
-classifier:
-  scan_length: 2000  # characters to inspect from start
-  document_types:
-    invoice:
-      keywords:
-        - "invoice #"
-        - "invoice date"
-        - "total amount due"
-      min_keywords: 1
-    ticket:
-      keywords:
-        - "invoice discrepancy ticket"
-        - "ticket id"
-        - "issue type"
-      min_keywords: 1
-  unknown:
-    default_type: "unknown"
-
-database:
-  default_path: "data/invoices.db"
+chat_agent:
+  model_id: "meta-llama/Meta-Llama-3.1-70B-Instruct"
+  temperature: 0.1
