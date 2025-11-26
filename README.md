@@ -69,12 +69,12 @@ Interactive agent for follow-up questions that:
 ```text
 src/
 ├── agent/
-│   ├── smol_document_agent.py    # Autonomous document workflow
-│   ├── chat_agent.py             # Interactive Q&A with RAG
-│   └── llm_client.py             # LLM initialization
+│   ├── smol_document_agent.py    # document workflow
+│   ├── chat_agent.py             # RAG
+│   └── llm_client.py             # OLLama
 ├── tools/
-│   ├── parsing_tools.py          # PDF extraction
-│   ├── math_tools.py             # Invoice validation
+│   ├── parsing_tools.py          # extraction
+│   ├── math_tools.py             # math validation
 │   ├── reconciliation_tools.py   # DB comparison
 │   ├── db_tools.py               # Database operations
 │   ├── email_tools.py            # Email drafting/sending
@@ -86,13 +86,13 @@ src/
 │   └── document_classifier.py    # Doc type detection
 ├── db/
 │   ├── db_client.py              # SQLite wrapper
-│   ├── init_db.py                # Schema initialization
+│   ├── init_db.py                # Schema init
 │   └── schema.sql                # Table definitions
 ├── config/
 │   ├── config.yaml               # LLM & chat agent config
 │   └── prompts.py                # System/user prompts
 ├── ui/
-│   ├── header.py                 # Streamlit header
+│   ├── header.py                 # Streamlit custom header
 │   ├── workflow_tab.py           # Document upload & agent execution
 │   ├── chat_tab.py               # Interactive chat interface
 │   └── __init__.py
