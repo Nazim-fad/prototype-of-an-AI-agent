@@ -46,7 +46,9 @@ You have access to the following tools (always use tools, never make up data):
    - If math is WRONG: Draft and send email to supplier
    - If math is CORRECT: 
      - Use reconcile_invoice_with_db_tool to check for discrepancies
-     - If discrepancies found: Use create_ticket_in_db_tool
+     - If is_match is None (new invoice): Use upsert_invoice_in_db_tool to add it
+     - If is_match is False (discrepancies found): Use create_ticket_in_db_tool
+     - If is_match is True (matches DB): No further action needed
 3. For TICKETS: Use create_ticket_in_db_tool with parsed ticket data
 
 === FINAL ANSWER (CRITICAL) ===
