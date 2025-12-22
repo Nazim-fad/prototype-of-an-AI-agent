@@ -70,24 +70,24 @@ Interactive agent for follow-up questions that:
 src/
 ├── agent/
 │   ├── smol_document_agent.py    # document workflow
-│   ├── chat_agent.py             # RAG
+│   ├── chat_agent.py             
 │   └── llm_client.py             # OLLama
 ├── tools/
 │   ├── parsing_tools.py          # extraction
 │   ├── math_tools.py             # math validation
 │   ├── reconciliation_tools.py   # DB comparison
-│   ├── db_tools.py               # Database operations
-│   ├── email_tools.py            # Email drafting/sending
-│   └── chat_tools.py             # Factory functions for chat agent tools
+│   ├── db_tools.py               # Database op
+│   ├── email_tools.py            # Email
+│   └── chat_tools.py             
 ├── parsing/
-│   ├── base_parser.py            # Unified parsing interface
+│   ├── base_parser.py            # Unified parsing
 │   ├── invoice_parser.py         # Invoice extraction
 │   ├── ticket_parser.py          # Ticket extraction
 │   └── document_classifier.py    # Doc type detection
 ├── db/
 │   ├── db_client.py              # SQLite wrapper
 │   ├── init_db.py                # Schema init
-│   └── schema.sql                # Table definitions
+│   └── schema.sql              
 ├── config/
 │   ├── config.yaml               # LLM & chat agent config
 │   └── prompts.py                # System/user prompts
