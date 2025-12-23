@@ -33,7 +33,7 @@ def main() -> None:
         st.session_state["chat_agent"] = None
         st.session_state["chat_agent_doc_id"] = None
 
-    logo_path = STATIC_DIR / "dataiku.png"
+    logo_path = STATIC_DIR / "ghost.png"
     inject_custom_header(logo_path, "Invoice & Ticket Reconciliation Agent")
 
     st.write(
