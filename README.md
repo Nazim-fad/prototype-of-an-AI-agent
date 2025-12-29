@@ -11,6 +11,8 @@ An AI-powered agent that processes invoices and support tickets using LLMs.
 - **Email Generation** → Drafts responses to suppliers and sends via Gmail
 - **Interactive Chat** → Ask follow-up questions about uploaded documents with RAG-powered semantic search
 
+You can find a better description in the presentation slides.
+
 ## Quick Start
 
 ### Prerequisites
@@ -58,10 +60,9 @@ Uses 8 specialized tools and runs with `max_steps=20`.
 
 Interactive agent for follow-up questions that:
 
-1. Performs semantic search over document text (RAG)
+1. Performs RAG
 2. Accesses structured invoice/ticket fields
-3. Maintains conversation history
-4. Returns natural language answers
+3. Returns natural language answers
 
 
 ### Project Structure
@@ -72,30 +73,11 @@ src/
 │   ├── smol_document_agent.py    # document workflow
 │   ├── chat_agent.py             
 │   └── llm_client.py             # OLLama
-├── tools/
-│   ├── parsing_tools.py          # extraction
-│   ├── math_tools.py             # math validation
-│   ├── reconciliation_tools.py   # DB comparison
-│   ├── db_tools.py               # Database op
-│   ├── email_tools.py            # Email
-│   └── chat_tools.py             
-├── parsing/
-│   ├── base_parser.py            # Unified parsing
-│   ├── invoice_parser.py         # Invoice extraction
-│   ├── ticket_parser.py          # Ticket extraction
-│   └── document_classifier.py    # Doc type detection
-├── db/
-│   ├── db_client.py              # SQLite wrapper
-│   ├── init_db.py                # Schema init
-│   └── schema.sql              
-├── config/
-│   ├── config.yaml               # LLM & chat agent config
-│   └── prompts.py                # System/user prompts
-├── ui/
-│   ├── header.py                 # Streamlit custom header
-│   ├── workflow_tab.py           # Document upload & agent execution
-│   ├── chat_tab.py               # Interactive chat interface
-│   └── __init__.py
+├── tools/                        # agent tools : extraction + math validation + DB comparison + Email + Database op       
+├── parsing/                      # parsing scripts for Invoice + Ticket and a Doc type detection script
+├── db/                           # files to init the db and an SQLite wrapper      
+├── config/                       # System/user prompts and LLM & chat agent config (model name ...)
+├── ui/                           # UI files 
 └── tests/
     └── test_parsing.py           # Parsing unit tests
 ```
@@ -110,14 +92,6 @@ src/
 - **UI**: Streamlit
 - **Database**: SQLite
 - **Configuration**: YAML + Python
-
-## Key Design Patterns
-
-1. **Tool Factories** — Parameterized tools via closures for the chat agent
-2. **Deterministic LLM** — Temperature 0.1 for consistent invoice processing
-3. **Dual-Agent Architecture** — document workflow + chat
-4. **System Instructions** — Explicit policies guide agent behavior
-5. **Max Steps Limits** — Runaway protection with appropriate step budgets
 
 ## Key Files
 
